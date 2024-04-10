@@ -7,7 +7,6 @@
 //5번의 기회를 다쓰면 게임이 끝남(추측불가, 버튼 사용불가)
 //유저가 1~100 범위 밖에 숫자를 입력하면 알려줌. 기회 깎지 않음
 //유저가 이미 입력한 숫자 또 입력하면 알려줌. 기회 깎지 않음
-
 let computerNum=0;
 let playButton=document.getElementById("play-button");
 //document 이 웹사이트 자체이고, 플레이버튼이란 아이디(클래스같은것도 o)를 선택한다는 의미
@@ -17,8 +16,8 @@ let resetButton=document.getElementById("reset-button");
 let chances=5;
 let gameOver=false;
 let chanceArea=document.getElementById("chance-area");
+let mainImg=document.querySelector(".article-main #main-img img");
 let history=[];
-
 
 playButton.addEventListener("click",play);
 resetButton.addEventListener("click",reset);
@@ -39,16 +38,20 @@ function play(){
 
     if(userValue<1||userValue>100)
     {
-        resultArea.textContent="1과 100 사이 숫자를 입력해주세요";
+        resultArea.textContent="1과 100 사이 숫자를 입력해야해. 바보야.";
+        mainImg.src="img_ham/햄스터짤_범위.jpeg";
+
         return;
     }
 
 if(history.includes(userValue)){
-    resultArea.textContent="이미 입력한 숫자입니다 다른 숫자를 입력해 주세요"
+    resultArea.innerHTML="이미 입력했던 숫자잖아. 다른 숫자 입력해."
+    mainImg.src="img_ham/햄스터짤_같은숫자.jpeg";
     return;
 }
 
     chances --;
+    console.log(chances);
 
     chanceArea.textContent=`남은 기회 : ${chances}번`;
 
@@ -58,8 +61,9 @@ if(history.includes(userValue)){
         resultArea.textContent = "DOWN!!!";
     }
     else{
-        resultArea.textContent = "맞추셨습니다!!!";
+        resultArea.textContent = "푸힝힝 나도 이제 부자다! 이 바보야!";
         gameOver=true;
+        mainImg.src="img_ham/햄스터짤_정답.jpeg";
     }
 
     history.push(userValue);
@@ -67,6 +71,9 @@ if(history.includes(userValue)){
     
     if(chances<1){
         gameOver=true;
+        mainImg.src="img_ham/햄스터짤_오답.jpeg";
+        resultArea.textContent = "난 이제 그지야 이 바보야";
+
     }
     if(gameOver==true){
         playButton.disabled=true;
@@ -78,8 +85,13 @@ function reset(){
     userInput.value="";
     //새로운 번호가 생성되고
     pickRandomNum();
-
-    resultArea.textContent="결과값이 여기 나옵니다!!!";
+    resultArea.textContent="결과값은 요기서 나와!";
+    gameOver=false;
+    chances=5;
+    history=[];
+    playButton.disabled=false;
+    chanceArea.textContent=`남은 기회 : ${chances}번`;
+    mainImg.src="img_ham/햄스터짤_메인2.gif";   
 }
 
 pickRandomNum();
